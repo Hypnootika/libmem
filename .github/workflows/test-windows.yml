@@ -21,6 +21,8 @@ jobs:
           cd build
           nmake
           cd ..
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
 
       - name: Run Unit Tests
         run: |
