@@ -20,6 +20,14 @@
 
 #define UNIT_TEST(func) UNIT_TEST_P(func, NULL)
 
+void test_asm()
+{
+	UNIT_TEST(LM_Assemble);
+	UNIT_TEST(LM_AssembleEx);
+	UNIT_TEST(LM_Disassemble);
+	UNIT_TEST(LM_DisassembleEx);
+}
+
 void test_process(lm_process_t *pcurproc, lm_process_t *ptargetproc)
 {
 	UNIT_TEST(LM_EnumProcesses);
@@ -98,7 +106,7 @@ void test_module(lm_process_t *pcurproc, lm_process_t *ptargetproc)
 	UNIT_TEST_P(LM_LoadModule, &mod);
 	UNIT_TEST_P(LM_UnloadModule, &mod);
 	UNIT_TEST_P(LM_LoadModuleEx, &arg);
-	/* TODO: Add test for LM_UnloadModuleEx */
+	/* UNIT_TEST_P(LM_UnloadModuleEx, &arg); */ /* NOTE: Disabled due to not working under glibc (Linux) */
 }
 
 void test_segment(lm_process_t *pcurproc, lm_process_t *ptargetproc)
@@ -173,6 +181,7 @@ main()
 	printf("[*] Unit Tests\n");
 	printf("[*] NOTE: Some operations may require root access (or Administrator)\n");
 
+	test_asm();
 	test_process(&current_process, &target_process);
 	test_thread(&current_process, &target_process, &current_thread, &target_thread);
 	test_segment(&current_process, &target_process);

@@ -1,5 +1,6 @@
 #include "arch.h"
 #include <stdio.h>
+#include <memory.h>
 
 lm_arch_t
 get_architecture()
@@ -21,7 +22,7 @@ generate_hook_payload(lm_address_t from, lm_address_t to, lm_size_t bits, lm_byt
 		 */
 		snprintf(code, sizeof(code), "jmp [rip]; nop; nop; nop; nop; nop; nop; nop; nop");
 	} else {
-		snprintf(code, sizeof(code), "jmp %lx", (unsigned long)to);
+		snprintf(code, sizeof(code), "jmp 0x%x", (unsigned int)to);
 	}
 	
 	size = LM_AssembleEx(code, get_architecture(), bits, from, payload_out);
@@ -40,4 +41,5 @@ lm_size_t
 generate_no_ops(lm_byte_t *buf, lm_size_t size)
 {
 	memset(buf, 0x90, size);
+	return size;
 }
